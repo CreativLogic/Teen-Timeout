@@ -6,12 +6,10 @@
 <title>Teen Timeout</title>
 <style>
   :root{
-    --text:#0f172a;
-    --muted:#334155;
-    --accent:#ff3b30;
-    --dice:#ffffff;
-    --shadow: 0 20px 50px rgba(0,0,0,.35), 0 8px 20px rgba(0,0,0,.25);
-    --dice-shadow: 0 12px 24px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.75);
+    --bg-start:#0d0f14; --bg-end:#1a1f2b;
+    --dice:#ffffff; --text:#e9ecf1; --muted:#a9b0be; --accent:#ff3b30;
+    --shadow: 0 20px 50px rgba(0,0,0,.55), 0 8px 20px rgba(0,0,0,.45);
+    --dice-shadow: 0 12px 24px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.6);
     --radius:16px; --radius-lg:24px; --speed:900ms;
   }
   *{box-sizing:border-box}
@@ -19,89 +17,44 @@
   body{
     margin:0;color:var(--text);
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-    /* bright, fun gradient background */
-    background:
-      radial-gradient(1200px 800px at 80% -10%, rgba(255,255,255,.25) 0%, transparent 40%),
-      radial-gradient(900px 700px at -10% 100%, rgba(255,255,255,.2) 0%, transparent 55%),
-      linear-gradient(135deg, #FFE259 0%, #FFA751 25%, #FF6CAB 60%, #7366FF 100%);
-    display:flex;align-items:center;justify-content:center;padding:28px;overflow:hidden;
+    background: radial-gradient(1200px 800px at 70% -10%, #2c3345 0%, transparent 40%),
+                radial-gradient(900px 700px at -10% 100%, #242b3a 0%, transparent 55%),
+                linear-gradient(160deg, var(--bg-start), var(--bg-end));
+    display:flex;align-items:center;justify-content:center;padding:28px;
   }
-
-  /* handwriting layer */
-  .write-layer{
-    position:fixed; inset:0; pointer-events:none; opacity:.18;
-  }
-  .write-svg{ width:1600px; max-width:none; position:absolute; top:6%; left:50%; transform:translateX(-50%); }
-  .write-svg text{
-    font: 900 64px/1.1 "SF Pro Display", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    fill: transparent;
-    stroke: #0f172a;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 1200;
-    stroke-dashoffset: 1200;
-    animation: draw 6s ease-in-out infinite;
-  }
-  @keyframes draw{
-    0%   { stroke-dashoffset: 1200 }
-    35%  { stroke-dashoffset: 0 }
-    60%  { stroke-dashoffset: 0 }
-    100% { stroke-dashoffset: -1200 }
-  }
-  .pen{
-    position:absolute; top: calc(6% + 52px); left: 10%;
-    font-size: 28px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.25));
-    animation: penmove 6s ease-in-out infinite;
-  }
-  @keyframes penmove{
-    0% { transform: translateX(0) rotate(-6deg) }
-    35%{ transform: translateX(1200px) rotate(4deg) }
-    60%{ transform: translateX(1200px) rotate(4deg) }
-    100%{ transform: translateX(0) rotate(-6deg) }
-  }
-
-  .wrap{width:min(100%,1100px); position:relative; z-index:1;}
+  .wrap{width:min(100%,1100px)}
   header{text-align:center;margin-bottom:22px}
-  .title{
-    font-weight:950;letter-spacing:.6px;margin:0 0 6px 0;text-align:center;opacity:.95;color:#0b1220
-  }
+  .title{font-weight:900;letter-spacing:.6px;margin:0 0 6px 0;text-align:center;opacity:.9}
   .banner{
-    display:inline-block;padding:14px 20px;border-radius:18px;
-    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
-    box-shadow:var(--shadow);letter-spacing:.5px;font-weight:900;
-    font-size:clamp(18px,3vw,28px);text-transform:uppercase;color:#111827
+    display:inline-block;padding:14px 20px;border-radius:var(--radius);
+    background:linear-gradient(180deg,#161a24,#0f131b);
+    box-shadow:var(--shadow);letter-spacing:.5px;font-weight:800;
+    font-size:clamp(18px,3vw,28px);text-transform:uppercase
   }
-
   .card{
-    background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
-    backdrop-filter: blur(6px);
-    border:1px solid rgba(0,0,0,.05);
-    border-radius:var(--radius-lg);
-    box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:24px;position:relative;overflow:hidden;
   }
   .grid{display:grid;grid-template-columns:1fr;gap:22px}
   @media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
-
-  /* DICE (visual blocks, not inputs) */
   .die{
-    background:var(--dice); color:#111; border-radius:20px; padding:22px; min-height:180px;
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    font-weight:800; font-size:clamp(18px,2.6vw,28px); line-height:1.25;
-    box-shadow:var(--dice-shadow); transform-style:preserve-3d;
-    transition:transform var(--speed) cubic-bezier(.2,.7,.2,1); position:relative
+    background:var(--dice);color:#111;border-radius:20px;padding:22px;min-height:180px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-weight:800;font-size:clamp(18px,2.6vw,28px);line-height:1.25;
+    box-shadow:var(--dice-shadow);transform-style:preserve-3d;
+    transition:transform var(--speed) cubic-bezier(.2,.7,.2,1);position:relative
   }
   .die::after{
-    content:""; position:absolute; inset:0; border-radius:20px;
-    background: radial-gradient(300px 140px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
+    content:"";position:absolute;inset:0;border-radius:20px;
+    background:radial-gradient(300px 140px at 20% 10%, rgba(255,255,255,.35), transparent 60%),
                radial-gradient(220px 120px at 80% 90%, rgba(0,0,0,.04), transparent 60%);
-    pointer-events:none; mix-blend-mode:screen
+    pointer-events:none;mix-blend-mode:screen
   }
-  .die-label{position:absolute;top:12px;left:16px;font-size:12px;letter-spacing:.8px;color:#555;font-weight:800;text-transform:uppercase}
-
+  .die-label{position:absolute;top:12px;left:16px;font-size:12px;letter-spacing:.8px;color:#444;font-weight:700;text-transform:uppercase}
   .controls{margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
   .btn{
-    cursor:pointer;border:0;padding:13px 18px;border-radius:12px;font-weight:900;letter-spacing:.3px;
+    cursor:pointer;border:0;padding:13px 18px;border-radius:12px;font-weight:800;letter-spacing:.3px;
     background:linear-gradient(180deg,#3a7cff,#2c5fe0);color:white;
     box-shadow:0 10px 20px rgba(42,110,255,.35), inset 0 1px 0 rgba(255,255,255,.4);
     transition:transform .08s ease, filter .2s ease
@@ -109,18 +62,16 @@
   .btn:hover{filter:brightness(1.07)}
   .btn:active{transform:translateY(1px)}
   .btn.secondary{
-    background:linear-gradient(180deg,#6d7cff,#5b64a8);
-    box-shadow:0 10px 20px rgba(60,70,160,.35), inset 0 1px 0 rgba(255,255,255,.25);
+    background:linear-gradient(180deg,#5c6577,#475163);
+    box-shadow:0 10px 20px rgba(60,70,90,.35), inset 0 1px 0 rgba(255,255,255,.25);
   }
-  .pill{
-    display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;
-    background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.06);font-weight:800;color:#111
+  .toggle, .lock, .mode {
+    display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-weight:700;color:var(--text)
   }
   .result{margin-top:10px;font-size:clamp(18px,2.2vw,24px);font-weight:900;color:var(--accent);letter-spacing:.3px;min-height:1.5em}
-  .footer{margin-top:18px;text-align:center;color:#0b1220;font-weight:800}
-  .legal{margin-top:6px;font-size:12px;color:#334155}
-  .tiny-copy{margin-top:6px; font-size:11px; color:#334155}
-
+  .footer{margin-top:18px;text-align:center;color:var(--muted);font-weight:700}
+  .legal{margin-top:6px;font-size:12px;color:#7d8596}
   .rolling{animation:wobble var(--speed) ease-in-out}
   @keyframes wobble{
     0%{transform:rotate3d(1,0,0,0deg) rotateZ(0deg)}
@@ -128,51 +79,58 @@
     60%{transform:rotate3d(.2,1,0,300deg) rotateZ(-10deg)}
     100%{transform:rotate3d(0,0,0,360deg) rotateZ(0deg)}
   }
+  .side{
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:12px
+  }
+  .history{
+    margin-top:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    border-radius:14px;padding:12px
+  }
+  .history h3{margin:0 0 8px 0;font-size:14px;color:#cbd2e0;text-transform:uppercase;letter-spacing:.6px}
+  .history ul{list-style:none;margin:0;padding:0;max-height:160px;overflow:auto}
+  .history li{font-size:14px;padding:6px 4px;border-bottom:1px dashed rgba(255,255,255,.08)}
+  .history li:last-child{border-bottom:0}
+  .suggestion{
+    margin-top:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+    border-radius:14px;padding:12px;font-weight:700;color:#eaeef7
+  }
+  dialog {
+    border:none;border-radius:14px;padding:0;max-width:420px;width:92%;
+    background:#0f131b;color:#e9ecf1;box-shadow:var(--shadow);
+  }
+  dialog .modal-inner{padding:18px}
+  dialog .close-x{position:absolute;right:10px;top:8px;cursor:pointer;font-weight:900}
+  dialog input, dialog textarea{
+    width:100%;padding:12px;border-radius:10px;border:1px solid #2b3242;background:#141a25;color:#e9ecf1;font-weight:700
+  }
+  dialog textarea{min-height:90px;resize:vertical}
+  dialog .row{display:flex;gap:10px;margin-top:12px}
+  canvas#confetti{position:fixed;inset:0;pointer-events:none}
 
-  /* Overlays */
+  /* PARENT'S CHOICE banner */
   .pc-banner{
     position:absolute; inset:0; display:none; align-items:center; justify-content:center;
-    font-weight:1000; font-size:clamp(36px, 10vw, 120px); color:#fff;
+    font-weight:900; font-size:clamp(36px, 10vw, 120px); color:#fff;
     text-transform:uppercase; letter-spacing:4px; opacity:0.0; pointer-events:none;
   }
   .pc-banner.show{ display:flex; animation: pcflash 1200ms ease-in-out 1; }
   @keyframes pcflash{
     0%{ opacity:0; transform: scale(0.98) rotate(-1deg)}
-    20%{ opacity:.55 }
-    50%{ opacity:.4; transform: scale(1.02) rotate(1deg)}
-    80%{ opacity:.55 }
+    20%{ opacity:.5 }
+    50%{ opacity:.35; transform: scale(1.02) rotate(1deg)}
+    80%{ opacity:.5 }
     100%{ opacity:0; transform: scale(1) }
   }
   .pc-banner span{
-    background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.35));
+    background: linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.2));
     -webkit-background-clip:text; background-clip:text; color:transparent;
-    text-shadow: 0 10px 30px rgba(0,0,0,.35);
+    text-shadow: 0 8px 30px rgba(0,0,0,.45);
   }
 
-  /* Dialogs */
-  dialog {
-    border:none;border-radius:16px;padding:0;max-width:480px;width:92%;
-    background:#ffffff;color:#0b1220; box-shadow:var(--shadow);
-  }
-  dialog .modal-inner{padding:18px}
-  dialog .close-x{position:absolute;right:10px;top:8px;cursor:pointer;font-weight:900}
-  dialog textarea, dialog input{
-    width:100%;padding:12px;border-radius:10px;border:1px solid #d1d5db;background:#f8fafc;color:#0b1220;font-weight:700
-  }
-  dialog textarea{min-height:96px;resize:vertical}
-  dialog .row{display:flex;gap:10px;margin-top:12px}
-  canvas#confetti{position:fixed;inset:0;pointer-events:none}
+  .tiny-copy{margin-top:6px; font-size:11px; color:#9aa3b7}
 </style>
 </head>
 <body>
-<!-- fun handwriting background -->
-<div class="write-layer" aria-hidden="true">
-  <svg class="write-svg" viewBox="0 0 1400 120">
-    <text x="0" y="72">I WILL NEVER DO IT AGAIN</text>
-  </svg>
-  <div class="pen">🖊️</div>
-</div>
-
 <canvas id="confetti"></canvas>
 
 <div class="wrap">
@@ -195,36 +153,43 @@
       </div>
     </div>
 
-    <div class="controls" style="justify-content:space-between">
-      <div class="pill" role="group" aria-label="Roll mode">
+    <div class="side">
+      <div class="mode" role="group" aria-label="Roll mode">
         <label><input type="radio" name="mode" value="single" checked> Single Roll</label>
         <label><input type="radio" name="mode" value="best3"> Best of 3</label>
       </div>
 
-      <div class="pill">
+      <div class="toggle">
         <input type="checkbox" id="double" />
         <label for="double">Double or Nothing</label>
       </div>
 
-      <div class="pill">
+      <div class="lock">
         <button id="lockBtn" class="btn secondary" type="button">Parent Lock</button>
-        <span id="lockState" style="font-weight:900;margin-left:6px;">Unlocked</span>
+        <span id="lockState" style="font-weight:800">Unlocked</span>
+      </div>
+
+      <div class="controls">
+        <button id="roll" class="btn" aria-label="Roll both dice">Roll</button>
+        <button id="reroll-one" class="btn" aria-label="Re-roll one die">Re-roll One</button>
+        <button id="share" class="btn" aria-label="Share last roll">Share</button>
+        <button id="rulesBtn" class="btn secondary" aria-label="Show rules">Rules</button>
+        <button id="clear-history" class="btn secondary" aria-label="Clear history">Clear</button>
       </div>
     </div>
 
-    <div class="controls">
-      <button id="roll" class="btn" aria-label="Roll both dice">Roll</button>
-      <button id="reroll-one" class="btn" aria-label="Re-roll one die">Re-roll One</button>
-      <button id="share" class="btn" aria-label="Share last roll">Share</button>
-      <button id="rulesBtn" class="btn secondary" aria-label="Show rules">Rules</button>
-      <button id="clear-history" class="btn secondary" aria-label="Clear history">Clear</button>
+    <div class="controls" style="margin-top:10px">
+      <button id="setPC" class="btn secondary" type="button">Set Parent’s choice</button>
+      <span id="pcStatus" style="opacity:.85">Hidden until landed</span>
     </div>
 
     <div class="result" id="result" aria-live="assertive"></div>
 
-    <div class="history" style="margin-top:14px;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px">
-      <h3 style="margin:0 0 8px 0;font-size:14px;color:#0b1220;text-transform:uppercase;letter-spacing:.6px">Last 10 Rolls</h3>
-      <ul id="history" style="list-style:none;margin:0;padding:0;max-height:160px;overflow:auto"></ul>
+    <div class="suggestion" id="suggestion">Tip appears here after you roll.</div>
+
+    <div class="history">
+      <h3>Last 10 Rolls</h3>
+      <ul id="history"></ul>
       <div class="tiny-copy">cooyright©️2025 DAD BOD ENT.</div>
     </div>
 
@@ -235,30 +200,30 @@
   </section>
 </div>
 
-<!-- ONE-TIME Parent’s choice modal (appears after mode pick) -->
-<dialog id="pcModal">
-  <div class="modal-inner">
-    <div class="close-x" id="pcClose">×</div>
-    <h3 style="margin:0 0 8px 0">Parent’s choice (optional)</h3>
-    <p style="margin:0 0 12px 0;font-size:14px;color:#475569">Set it once now. It stays hidden unless the roll lands on Parent’s choice.</p>
-    <textarea id="pcInput" placeholder="Type your custom punishment"></textarea>
-    <div class="row" style="justify-content:flex-end">
-      <button class="btn secondary" id="pcSkip" type="button">Skip</button>
-      <button class="btn" id="pcSave" type="button">Save</button>
-    </div>
-  </div>
-</dialog>
-
 <!-- PIN modal -->
 <dialog id="pinModal">
   <div class="modal-inner">
     <div class="close-x" id="pinClose">×</div>
     <h3 style="margin:0 0 8px 0">Parent Lock PIN</h3>
-    <p style="margin:0 0 12px 0;font-size:14px;color:#475569" id="pinHelp">Set a 4 digit PIN.</p>
+    <p style="margin:0 0 12px 0;font-size:14px;color:#cbd2e0" id="pinHelp">Set a 4 digit PIN.</p>
     <input id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" aria-label="PIN" />
-    <div class="row" style="justify-content:flex-end">
+    <div class="row">
       <button class="btn secondary" id="pinCancel" type="button">Cancel</button>
       <button class="btn" id="pinOk" type="button">OK</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Parent’s choice modal -->
+<dialog id="pcModal">
+  <div class="modal-inner">
+    <div class="close-x" id="pcClose">×</div>
+    <h3 style="margin:0 0 8px 0">Set Parent’s choice</h3>
+    <p style="margin:0 0 12px 0;font-size:14px;color:#cbd2e0">This is hidden and only revealed if landed on.</p>
+    <textarea id="pcInput" placeholder="Type your custom punishment"></textarea>
+    <div class="row">
+      <button class="btn secondary" id="pcCancel" type="button">Cancel</button>
+      <button class="btn" id="pcOk" type="button">Save</button>
     </div>
   </div>
 </dialog>
@@ -268,12 +233,12 @@
   <div class="modal-inner">
     <div class="close-x" id="rulesClose">×</div>
     <h3 style="margin:0 0 8px 0">Rules</h3>
-    <ul style="line-height:1.5;margin:0 0 8px 16px;padding:0;color:#0b1220">
-      <li>Choose Single Roll or Best of 3. On first choice, you’ll set Parent’s choice.</li>
-      <li>Best of 3 picks the majority. If all different, higher time severity wins.</li>
+    <ul style="line-height:1.5;margin:0 0 8px 16px;padding:0">
+      <li>Pick Single Roll or Best of 3.</li>
+      <li>Best of 3 picks the majority. If all different, the result with higher time severity wins.</li>
       <li>Double or Nothing affects time only. If Nothing hits, the punishment is cleared.</li>
-      <li>Parent’s choice is hidden unless landed on.</li>
-      <li>History resets on load.</li>
+      <li>Parent’s choice stays hidden unless landed on.</li>
+      <li>History resets every time you load the app.</li>
     </ul>
     <div class="row" style="justify-content:flex-end">
       <button class="btn" id="rulesOk" type="button">Got it</button>
@@ -282,90 +247,93 @@
 </dialog>
 
 <script>
-  /* ===== Data & constants ===== */
+  // Data
   const CONSEQUENCES = ["Corner time","No TV","Parent’s choice","All chores","No friends","Sibling decides"];
   const TIMES = ["1 day","2 days","1 week","1x","2x","45 min"];
   const TIME_RANK = {"45 min":1,"1x":2,"1 day":3,"2x":4,"2 days":5,"1 week":6};
+  const TIPS = [
+    "Parents aren’t dictators… ya know, maybe you can offer to wash their car?",
+    "Wanna know a secret? Parents secretly like essays too. #justsayin",
+    "Consider yourself lucky🍀 —Your parents used to get beat with rulers & belts.",
+    "Grandma once said she had to choose the stick to get beat with… the thin ones hurt the most. 🤕",
+    "1.5M kids get proved wrong by their parents every 15 seconds. Let that sink in. 🫨",
+    "There’s an ice pack in the freezer to help with this burn!🔥"
+  ];
 
-  /* ===== Elements ===== */
-  const dieC = document.getElementById("die-consequence");
-  const dieT = document.getElementById("die-time");
-  const dieCText = document.getElementById("die-consequence-text");
-  const dieTText = document.getElementById("die-time-text");
-  const resultEl = document.getElementById("result");
-  const historyEl = document.getElementById("history");
-  const btnRoll = document.getElementById("roll");
-  const btnRerollOne = document.getElementById("reroll-one");
-  const btnClear = document.getElementById("clear-history");
-  const btnShare = document.getElementById("share");
-  const rulesBtn = document.getElementById("rulesBtn");
-  const pcBanner = document.getElementById("pcBanner");
-  const chkDouble = document.getElementById("double");
-  const lockBtn = document.getElementById("lockBtn");
-  const lockState = document.getElementById("lockState");
-
-  const pcModal = document.getElementById("pcModal");
-  const pcInput = document.getElementById("pcInput");
-  const pcSave = document.getElementById("pcSave");
-  const pcSkip = document.getElementById("pcSkip");
-  const pcClose = document.getElementById("pcClose");
-
-  const rulesModal = document.getElementById("rulesModal");
-  const rulesOk = document.getElementById("rulesOk");
-  const rulesClose = document.getElementById("rulesClose");
-
-  const pinModal = document.getElementById("pinModal");
-  const pinInput = document.getElementById("pinInput");
-  const pinHelp = document.getElementById("pinHelp");
-  const pinCancel = document.getElementById("pinCancel");
-  const pinOk = document.getElementById("pinOk");
-  const pinClose = document.getElementById("pinClose");
-
-  /* ===== State ===== */
-  let mode = "single";
-  let askedForPCOnce = false;
-  let parentsChoice = "";
-  let parentPIN = null;
-  let locked = false;
-  let isRolling = false;
-  const history = [];
-  let lastShareText = "";
-
-  /* ===== Utilities ===== */
+  // Crypto index
   function secureIndex(len){
     const max = 256 - (256 % len);
     let b; do { const u = new Uint8Array(1); crypto.getRandomValues(u); b=u[0]; } while (b>=max);
     return b % len;
   }
-  function baseRoll(){ return { consequence: CONSEQUENCES[secureIndex(CONSEQUENCES.length)], time: TIMES[secureIndex(TIMES.length)] }; }
-  function chooseBestOf3(r1, r2, r3){
-    const arr=[r1,r2,r3], key=r=>`${r.consequence}|${r.time}`, count={};
-    arr.forEach(r => count[key(r)] = (count[key(r)]||0)+1);
-    const majority = arr.find(r => count[key(r)]>=2);
-    if(majority) return majority;
-    return arr.slice().sort((a,b)=> (TIME_RANK[b.time]||0)-(TIME_RANK[a.time]||0))[0];
-  }
-  function applyDoubleOrNothing(c, t){
-    if(!chkDouble.checked) return { consequence:c, time:t, note:null };
-    const heads = Math.random() < 0.5;
-    if(!heads) return { consequence:"Nothing", time:"Nothing", note:"Nothing" };
-    const map = { "1 day":"2 days", "2 days":"4 days", "1 week":"2 weeks", "45 min":"90 min", "1x":"2x", "2x":"4x" };
-    return { consequence:c, time: map[t] || t, note:"Double" };
-  }
-  function pushHistory(text){
-    history.unshift({when:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}), text});
-    if(history.length>10) history.pop();
-    historyEl.innerHTML = history.map(h=>`<li style="padding:6px 4px;border-bottom:1px dashed rgba(0,0,0,.08)"><strong>${h.when}</strong> — ${h.text}</li>`).join("");
+
+  function baseRoll(){ // returns raw roll without double-or-nothing
+    return { consequence: CONSEQUENCES[secureIndex(CONSEQUENCES.length)],
+             time: TIMES[secureIndex(TIMES.length)] };
   }
 
-  /* ===== Background confetti (GPU-friendly) ===== */
+  function chooseBestOf3(r1, r2, r3){
+    const arr = [r1,r2,r3];
+    // majority by string key
+    const key = r => `${r.consequence}|${r.time}`;
+    const count = {};
+    arr.forEach(r => count[key(r)] = (count[key(r)]||0)+1);
+    const majority = arr.find(r => count[key(r)] >= 2);
+    if(majority) return majority;
+    // tie-breaker by time severity
+    return arr.slice().sort((a,b)=> (TIME_RANK[b.time]||0) - (TIME_RANK[a.time]||0))[0];
+  }
+
+  // Double or Nothing on time only. If Nothing, clear punishment entirely.
+  function applyDoubleOrNothing(c, t){
+    const heads = Math.random() < 0.5;
+    if(!heads){ return { consequence:"Nothing", time:"Nothing", note:"Nothing" }; }
+    function doubled(s){
+      switch(s){
+        case "1 day": return "2 days";
+        case "2 days": return "4 days";
+        case "1 week": return "2 weeks";
+        case "45 min": return "90 min";
+        case "1x": return "2x";
+        case "2x": return "4x";
+        default: return s;
+      }
+    }
+    return { consequence: c, time: doubled(t), note: "Double" };
+  }
+
+  // Elements
+  const dieC = document.getElementById("die-consequence");
+  const dieT = document.getElementById("die-time");
+  const dieCText = document.getElementById("die-consequence-text");
+  const dieTText = document.getElementById("die-time-text");
+  const resultEl = document.getElementById("result");
+  const suggestionEl = document.getElementById("suggestion");
+  const historyEl = document.getElementById("history");
+  const btnRoll = document.getElementById("roll");
+  const btnRerollOne = document.getElementById("reroll-one");
+  const btnClear = document.getElementById("clear-history");
+  const btnShare = document.getElementById("share");
+  const chkDouble = document.getElementById("double");
+  const lockBtn = document.getElementById("lockBtn");
+  const lockState = document.getElementById("lockState");
+  const rulesBtn = document.getElementById("rulesBtn");
+  const pcBanner = document.getElementById("pcBanner");
+
+  // Mode
+  let mode = "single";
+  document.querySelectorAll('input[name="mode"]').forEach(r=>{
+    r.addEventListener('change', e => { mode = e.target.value; });
+  });
+
+  // Confetti
   const confettiCanvas = document.getElementById("confetti"); const ctx = confettiCanvas.getContext("2d");
   function resizeCanvas(){ confettiCanvas.width = innerWidth; confettiCanvas.height = innerHeight; }
-  addEventListener("resize", resizeCanvas, {passive:true}); resizeCanvas();
+  addEventListener("resize", resizeCanvas); resizeCanvas();
   let confetti = [];
   function burstConfetti(){
     confetti = [];
-    for(let i=0;i<180;i++){
+    for(let i=0;i<200;i++){
       confetti.push({x: confettiCanvas.width/2,y: confettiCanvas.height/3,r: Math.random()*4+2,
         vx: (Math.random()-0.5)*8,vy: Math.random()*-6-2,g: 0.15+Math.random()*0.15,a:1});
     }
@@ -384,23 +352,31 @@
     if(confetti.length>0) requestAnimationFrame(animateConfetti);
   }
 
-  /* ===== Minimal sounds (instant), haptics on mobile ===== */
+  // WebAudio minimal SFX
   const AudioCtx = window.AudioContext || window.webkitAudioContext; let audioCtx;
   function ensureAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); }
-  function playRumble(){ ensureAudio(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-    o.type="triangle"; o.frequency.setValueAtTime(140, audioCtx.currentTime);
+  function playRumble(){
+    ensureAudio();
+    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = "triangle"; o.frequency.setValueAtTime(140, audioCtx.currentTime);
     o.frequency.exponentialRampToValueAtTime(55, audioCtx.currentTime+0.25);
     g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.3, audioCtx.currentTime+0.05);
     g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+0.4);
     o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.42);
   }
-  function playChime(){ ensureAudio(); const notes=[523.25,659.25,783.99]; let t=audioCtx.currentTime;
-    notes.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type="sine"; o.frequency.value=f;
-      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.25,t+0.05); g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);
+  function playChime(){
+    ensureAudio();
+    const notes = [523.25,659.25,783.99]; let t = audioCtx.currentTime;
+    notes.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type="sine"; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.25,t+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);
       o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t+0.28); t+=0.06; });
   }
-  function playSad(){ ensureAudio(); const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  function playSad(){
+    ensureAudio();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
     o.type="sine"; o.frequency.setValueAtTime(392, audioCtx.currentTime);
     o.frequency.linearRampToValueAtTime(196, audioCtx.currentTime+0.35);
     g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
@@ -410,86 +386,149 @@
   }
   function haptic(p=[30]){ if(navigator.vibrate) navigator.vibrate(p); }
 
-  /* ===== Parent Lock ===== */
-  function updateLockUI(){ lockState.textContent = locked ? "Locked" : "Unlocked"; chkDouble.disabled = locked;
-    lockBtn.textContent = locked ? "Unlock" : (parentPIN ? "Lock" : "Set PIN"); }
+  // History in memory
+  const history = [];
+  function pushHistory(text){ history.unshift({when:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}), text}); if(history.length>10) history.pop(); renderHistory(); }
+  function renderHistory(){ historyEl.innerHTML = history.map(h=>`<li><strong>${h.when}</strong> — ${h.text}</li>`).join(""); }
+
+  // Parent’s choice storage
+  let parentsChoice = "";
+  const pcModal = document.getElementById("pcModal");
+  const pcInput = document.getElementById("pcInput");
+  const pcStatus = document.getElementById("pcStatus");
+  document.getElementById("setPC").addEventListener("click", ()=>{ if(isRolling) return; pcInput.value = parentsChoice; pcModal.showModal(); pcInput.focus(); });
+  document.getElementById("pcOk").addEventListener("click", ()=>{ parentsChoice = pcInput.value.trim(); pcStatus.textContent = parentsChoice ? "Saved. Hidden until landed" : "Hidden until landed"; pcModal.close(); });
+  document.getElementById("pcCancel").addEventListener("click", ()=> pcModal.close());
+  document.getElementById("pcClose").addEventListener("click", ()=> pcModal.close());
+
+  // Rules modal
+  const rulesModal = document.getElementById("rulesModal");
+  rulesBtn.addEventListener("click", ()=>{ if(isRolling) return; rulesModal.showModal(); });
+  document.getElementById("rulesOk").addEventListener("click", ()=> rulesModal.close());
+  document.getElementById("rulesClose").addEventListener("click", ()=> rulesModal.close());
+
+  // PIN modal
+  const pinModal = document.getElementById("pinModal");
+  const pinInput = document.getElementById("pinInput");
+  const pinHelp = document.getElementById("pinHelp");
+  const pinCancel = document.getElementById("pinCancel");
+  const pinOk = document.getElementById("pinOk");
+  const pinClose = document.getElementById("pinClose");
+  let parentPIN = null; let locked = false;
+  function updateLockUI(){
+    lockState.textContent = locked ? "Locked" : "Unlocked";
+    chkDouble.disabled = locked;
+    lockBtn.textContent = locked ? "Unlock" : (parentPIN ? "Lock" : "Set PIN");
+  }
   lockBtn.addEventListener("click", ()=>{
     if(isRolling) return;
     if(!parentPIN){
-      pinHelp.textContent="Set a 4 digit PIN."; pinInput.value=""; pinModal.showModal();
+      pinHelp.textContent = "Set a 4 digit PIN."; pinInput.value = ""; pinModal.showModal();
       pinOk.onclick = ()=>{ const v=pinInput.value.trim(); if(/^\d{4}$/.test(v)){ parentPIN=v; locked=true; pinModal.close(); updateLockUI(); } };
-    } else if(!locked){ locked = true; updateLockUI(); }
-    else {
-      pinHelp.textContent="Enter PIN to unlock."; pinInput.value=""; pinModal.showModal();
+    } else if(!locked){
+      locked = true; updateLockUI();
+    } else {
+      pinHelp.textContent = "Enter PIN to unlock."; pinInput.value=""; pinModal.showModal();
       pinOk.onclick = ()=>{ if(pinInput.value===parentPIN){ locked=false; pinModal.close(); updateLockUI(); } };
     }
   });
   pinCancel.addEventListener("click", ()=> pinModal.close());
   pinClose.addEventListener("click", ()=> pinModal.close());
+
   chkDouble.addEventListener("click", e=>{
-    if(locked){ e.preventDefault();
-      pinHelp.textContent="Enter PIN to change Double or Nothing."; pinInput.value=""; pinModal.showModal();
-      pinOk.onclick = ()=>{ if(pinInput.value===parentPIN){ locked=false; updateLockUI(); pinModal.close(); chkDouble.click(); } };
+    if(locked){ e.preventDefault(); pinHelp.textContent="Enter PIN to change Double or Nothing."; pinInput.value=""; pinModal.showModal();
+      pinOk.onclick = ()=>{ if(pinInput.value === parentPIN){ locked=false; updateLockUI(); pinModal.close(); chkDouble.click(); } };
     }
   });
 
-  /* ===== Rules ===== */
-  rulesBtn.addEventListener("click", ()=>{ if(isRolling) return; rulesModal.showModal(); });
-  rulesOk.addEventListener("click", ()=> rulesModal.close());
-  rulesClose.addEventListener("click", ()=> rulesModal.close());
-
-  /* ===== Mode selection → show Parent’s choice ONCE ===== */
-  document.querySelectorAll('input[name="mode"]').forEach(r=>{
-    r.addEventListener('change', e=>{
-      mode = e.target.value;
-      if(!askedForPCOnce){
-        askedForPCOnce = true;
-        pcInput.value = parentsChoice;
-        pcModal.showModal();
-      }
-    });
-  });
-  pcSave.addEventListener("click", ()=>{ parentsChoice = (pcInput.value || "").trim(); pcModal.close(); });
-  pcSkip.addEventListener("click", ()=>{ parentsChoice = ""; pcModal.close(); });
-  pcClose.addEventListener("click", ()=> pcModal.close());
-
-  /* ===== Dice animation helpers ===== */
+  // Spin animation flag
+  let isRolling = false;
   function animateDice(){
     isRolling = true;
     dieC.classList.remove("rolling"); dieT.classList.remove("rolling");
     void dieC.offsetWidth; void dieT.offsetWidth;
     dieC.classList.add("rolling"); dieT.classList.add("rolling");
   }
-  function showParentsChoiceBanner(){
-    pcBanner.classList.remove("show"); void pcBanner.offsetWidth; pcBanner.classList.add("show"); burstConfetti();
+
+  // Share
+  let lastShareText = "";
+  async function share(){
+    const text = lastShareText || "Teen Timeout";
+    if(navigator.share){ try{ await navigator.share({text}); }catch{} }
+    else {
+      try{ await navigator.clipboard.writeText(text); alert("Copied to clipboard."); }
+      catch{ prompt("Copy this", text); }
+    }
   }
 
-  /* ===== Rolling ===== */
+  // Finalize display
+  function showParentsChoiceBanner(){
+    pcBanner.classList.remove("show");
+    void pcBanner.offsetWidth;
+    pcBanner.classList.add("show");
+    burstConfetti();
+  }
+
+  function finalizeResult(c, t, note){
+    isRolling = false;
+    if(c === "Parent’s choice"){ showParentsChoiceBanner(); }
+    const displayTime = c==="Nothing" ? "Nothing" : t;
+    const line = `${c} … ${displayTime}${note?` (${note})`:``}`;
+    resultEl.textContent = line;
+    suggestionEl.textContent = TIPS[secureIndex(TIPS.length)];
+    pushHistory(line);
+    lastShareText = `Teen Timeout\n${line}\nLET THIS BE A LESSON. PARENTS ALWAYS WIN.🏆 #loveyou`;
+  }
+
+  function applyParentsChoiceText(c){
+    if(c==="Parent’s choice"){
+      if(parentsChoice){ return `Parent’s choice: ${parentsChoice}`; }
+      return "Parent’s choice";
+    }
+    return c;
+  }
+
+  // Rollers
+  function doSingleRoll(afterSpinCb){
+    const r = baseRoll();
+    dieCText.textContent = r.consequence;
+    dieTText.textContent = r.time;
+    afterSpinCb(r);
+  }
+
+  function doBestOf3(afterSpinCb){
+    const s1 = baseRoll(), s2 = baseRoll(), s3 = baseRoll();
+    const picked = chooseBestOf3(s1,s2,s3);
+    dieCText.textContent = picked.consequence;
+    dieTText.textContent = picked.time;
+    afterSpinCb(picked);
+  }
+
   function performRoll(){
     playRumble(); haptic([20,30,20]); animateDice();
-    const spinC=[...CONSEQUENCES].sort(()=>Math.random()-.5);
-    const spinT=[...TIMES].sort(()=>Math.random()-.5);
+    const spinC = [...CONSEQUENCES].sort(()=>Math.random()-.5);
+    const spinT = [...TIMES].sort(()=>Math.random()-.5);
     let k=0, ticks=14, interval=Math.floor(900/ticks);
-    const tmr=setInterval(()=>{
+    const timer = setInterval(()=>{
       dieCText.textContent = spinC[k % spinC.length];
       dieTText.textContent = spinT[k % spinT.length];
       if(++k>ticks){
-        clearInterval(tmr);
-        const r1 = baseRoll();
-        const picked = (mode==="single") ? r1 : chooseBestOf3(r1, baseRoll(), baseRoll());
-        dieCText.textContent = picked.consequence;
-        dieTText.textContent = picked.time;
+        clearInterval(timer);
+        const after = r=>{
+          // Apply Double or Nothing after selection
+          let c = r.consequence; let t = r.time; let note=null;
+          if(chkDouble.checked){
+            const dn = applyDoubleOrNothing(c, t);
+            c = dn.consequence; t = dn.time; note = dn.note;
+            if(note==="Double"){ playChime(); burstConfetti(); haptic([40,40,40]); }
+            else { playSad(); haptic([15,80]); }
+          } else { playChime(); haptic([25,30]); }
 
-        let {consequence:c, time:t, note} = applyDoubleOrNothing(picked.consequence, picked.time);
-
-        if(c==="Parent’s choice"){ showParentsChoiceBanner(); if(parentsChoice) c = `Parent’s choice: ${parentsChoice}`; }
-
-        isRolling = false;
-        const line = `${c} … ${c==="Nothing"?"Nothing":t}${note?` (${note})`:``}`;
-        resultEl.textContent = line;
-        pushHistory(line);
-        lastShareText = `Teen Timeout\n${line}\nLET THIS BE A LESSON. PARENTS ALWAYS WIN.🏆 #loveyou`;
-        if(note==="Double"){ playChime(); haptic([40,40,40]); } else if(chkDouble.checked && note==="Nothing"){ playSad(); haptic([15,80]); } else { playChime(); haptic([25,30]); }
+          // Show parent's custom text only if landed on
+          const cDisplay = c==="Parent’s choice" ? (parentsChoice ? `Parent’s choice: ${parentsChoice}` : "Parent’s choice") : c;
+          finalizeResult(cDisplay, t, note);
+        };
+        if(mode==="single") doSingleRoll(after); else doBestOf3(after);
       }
     }, interval);
   }
@@ -499,48 +538,38 @@
     playRumble(); haptic([20,30,20]); animateDice();
     const target = Math.random()<0.5?"C":"T";
     let k=0, ticks=10, interval=Math.floor(900/ticks);
-    const tmr=setInterval(()=>{
+    const tmr = setInterval(()=>{
       if(target==="C") dieCText.textContent = CONSEQUENCES[secureIndex(CONSEQUENCES.length)];
       else dieTText.textContent = TIMES[secureIndex(TIMES.length)];
       if(++k>ticks){
         clearInterval(tmr);
         if(target==="C") dieCText.textContent = CONSEQUENCES[secureIndex(CONSEQUENCES.length)];
         else dieTText.textContent = TIMES[secureIndex(TIMES.length)];
-        let c = dieCText.textContent, t = dieTText.textContent, note=null;
-        ({consequence:c, time:t, note} = applyDoubleOrNothing(c,t));
-        if(c==="Parent’s choice"){ showParentsChoiceBanner(); if(parentsChoice) c = `Parent’s choice: ${parentsChoice}`; }
-        isRolling=false;
-        const line = `${c} … ${c==="Nothing"?"Nothing":t}${note?` (${note})`:``}`;
-        resultEl.textContent = line; pushHistory(line); lastShareText = `Teen Timeout\n${line}\nLET THIS BE A LESSON. PARENTS ALWAYS WIN.🏆 #loveyou`;
-        if(note==="Double"){ playChime(); haptic([40,40,40]); } else if(chkDouble.checked && note==="Nothing"){ playSad(); haptic([15,80]); } else { playChime(); haptic([25,30]); }
+        // finalize from current faces with DoN
+        let c = dieCText.textContent; let t = dieTText.textContent; let note=null;
+        if(chkDouble.checked){
+          const dn = applyDoubleOrNothing(c, t);
+          c = dn.consequence; t = dn.time; note = dn.note;
+          if(note==="Double"){ playChime(); burstConfetti(); haptic([40,40,40]); }
+          else { playSad(); haptic([15,80]); }
+        } else { playChime(); haptic([25,30]); }
+        const cDisplay = c==="Parent’s choice" ? (parentsChoice ? `Parent’s choice: ${parentsChoice}` : "Parent’s choice") : c;
+        finalizeResult(cDisplay, t, note);
       }
     }, interval);
   }
 
-  /* ===== Share & Clear ===== */
-  async function share(){
-    const text = lastShareText || "Teen Timeout";
-    if(navigator.share){ try{ await navigator.share({text}); }catch{} }
-    else { try{ await navigator.clipboard.writeText(text); alert("Copied to clipboard."); }catch{ prompt("Copy this", text); } }
-  }
-
+  // Wire UI
   btnRoll.addEventListener("click", ()=>{ if(isRolling) return; performRoll(); });
   btnRerollOne.addEventListener("click", rerollOne);
   btnShare.addEventListener("click", share);
-  btnClear.addEventListener("click", ()=>{ history.length=0; historyEl.innerHTML=""; resultEl.textContent=""; });
+  btnClear.addEventListener("click", ()=>{ history.length=0; renderHistory(); resultEl.textContent=""; suggestionEl.textContent=""; });
+  [dieC,dieT].forEach(el=>el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); if(!isRolling) performRoll(); }}));
 
-  [dieC,dieT].forEach(el=>el.addEventListener("keydown", e=>{
-    if(e.key==="Enter"||e.key===" "){ e.preventDefault(); if(!isRolling) performRoll(); }
-  }));
-
-  /* ===== Init ===== */
+  // On load
   window.addEventListener("load", ()=>{
-    updateLockUI();
-    history.length=0; historyEl.innerHTML="";
+    history.length=0; renderHistory(); updateLockUI();
   });
-
-  /* accessibility close buttons */
-  document.getElementById("rulesClose").addEventListener("click", ()=> rulesModal.close());
 </script>
 </body>
 </html>
