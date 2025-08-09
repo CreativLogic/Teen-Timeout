@@ -6,50 +6,46 @@
 <title>Teen Timeout</title>
 <style>
   :root{
-    --ink:#0b1220;
-    --muted:#334155;
-    --accent:#ff2d55;      /* result red */
-    --dice:#ffffff;
-    --ui:#111827;
-    --pillOn:#1e40af;
-    --pillOff:#0f172a;
+    --ink:#0b1220; --accent:#ff2d55; --dice:#ffffff;
     --shadow-lg: 0 28px 70px rgba(0,0,0,.35), 0 10px 24px rgba(0,0,0,.25);
     --dice-shadow: 0 18px 36px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.8);
-    --radius:18px; --radius-lg:26px; --speed:900ms;
   }
-
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
     margin:0;color:var(--ink);
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
-    /* BRIGHT, FUN gradient */
     background:
       radial-gradient(1400px 900px at 90% -10%, rgba(255,255,255,.25) 0%, transparent 45%),
       radial-gradient(1000px 700px at 0% 100%, rgba(255,255,255,.22) 0%, transparent 60%),
-      linear-gradient(135deg, #ff9a9e 0%, #fad0c4 20%, #fad0c4 20%, #fbc2eb 40%, #a18cd1 60%, #84fab0 80%, #8fd3f4 100%);
+      linear-gradient(135deg, #ff9a9e 0%, #fad0c4 20%, #fbc2eb 40%, #a18cd1 60%, #84fab0 80%, #8fd3f4 100%);
     display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;
   }
 
-  /* handwriting layer */
+  /* handwriting layer – 3 staggered lines */
   .write-layer{position:fixed; inset:0; pointer-events:none; opacity:.20}
-  .write-svg{ width:1600px; max-width:none; position:absolute; top:6%; left:50%; transform:translateX(-50%); }
+  .write-svg{ width:1600px; max-width:none; position:absolute; left:50%; transform:translateX(-50%); }
+  .write-svg.line1{ top:6%;  }
+  .write-svg.line2{ top:18%; }
+  .write-svg.line3{ top:30%; }
   .write-svg text{
     font: 900 64px/1.1 "SF Pro Display", system-ui, -apple-system;
     fill: transparent; stroke: #0b1220; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: draw 6s ease-in-out infinite;
+    stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: draw 7s ease-in-out infinite;
   }
-  .pen{position:absolute; top: calc(6% + 52px); left: 10%; font-size: 28px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.25)); animation: penmove 6s ease-in-out infinite;}
+  .write-svg.line2 text{ animation-delay: .9s }
+  .write-svg.line3 text{ animation-delay: 1.8s }
   @keyframes draw{0%{stroke-dashoffset:1200}35%{stroke-dashoffset:0}60%{stroke-dashoffset:0}100%{stroke-dashoffset:-1200}}
+  .pen{position:absolute; top: calc(6% + 52px); left: 10%; font-size: 28px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.25)); animation: penmove 7s ease-in-out infinite;}
   @keyframes penmove{0%{transform:translateX(0) rotate(-6deg)}35%{transform:translateX(1200px) rotate(4deg)}60%{transform:translateX(1200px) rotate(4deg)}100%{transform:translateX(0) rotate(-6deg)}}
 
   .wrap{width:min(100%,1100px); position:relative; z-index:1;}
   header{text-align:center;margin-bottom:18px}
-  .title{font-weight:950;letter-spacing:.6px;margin:0 0 6px;color:#0b1220}
+  .title{font-weight:950;margin:0 0 6px;color:#0b1220}
   .banner{
     display:inline-block;padding:14px 20px;border-radius:18px;
-    background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-    box-shadow:var(--shadow-lg);letter-spacing:.5px;font-weight:900;
+    background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.75));
+    box-shadow:var(--shadow-lg);font-weight:900;
     font-size:clamp(18px,3vw,28px);text-transform:uppercase;color:#111827
   }
 
@@ -57,10 +53,9 @@
     background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.88));
     backdrop-filter: blur(6px);
     border:1px solid rgba(0,0,0,.05);
-    border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:22px;position:relative;overflow:hidden;
+    border-radius:26px;box-shadow:var(--shadow-lg);padding:22px;position:relative;overflow:hidden;
   }
 
-  /* grid + DICE (visual) */
   .grid{display:grid;grid-template-columns:1fr;gap:18px}
   @media(min-width:760px){.grid{grid-template-columns:1fr 1fr}}
 
@@ -70,14 +65,10 @@
     font-weight:900; font-size:clamp(20px,2.6vw,30px); line-height:1.22;
     box-shadow:var(--dice-shadow);
     transform-style:preserve-3d;
-    transition:transform var(--speed) cubic-bezier(.2,.7,.2,1), box-shadow .3s ease;
+    transition:transform 900ms cubic-bezier(.2,.7,.2,1);
     position:relative
   }
-  .die:before{
-    content:""; position:absolute; inset:0; border-radius:22px;
-    border: 10px solid rgba(0,0,0,.06);           /* subtle “edge” like a real die */
-    pointer-events:none;
-  }
+  .die:before{ content:""; position:absolute; inset:0; border-radius:22px; border: 10px solid rgba(0,0,0,.06); pointer-events:none; }
   .die::after{
     content:""; position:absolute; inset:0; border-radius:22px;
     background: radial-gradient(300px 140px at 20% 10%, rgba(255,255,255,.45), transparent 60%),
@@ -85,7 +76,7 @@
     pointer-events:none; mix-blend-mode:screen
   }
   .die-label{position:absolute;top:12px;left:16px;font-size:12px;letter-spacing:.8px;color:#555;font-weight:800;text-transform:uppercase}
-  .rolling{animation:wobble var(--speed) ease-in-out}
+  .rolling{animation:wobble 900ms ease-in-out}
   @keyframes wobble{0%{transform:rotate3d(1,0,0,0deg)}25%{transform:rotate3d(1,.6,0,160deg)}60%{transform:rotate3d(.2,1,0,300deg)}100%{transform:rotate3d(0,0,0,360deg)}}
 
   /* controls */
@@ -99,10 +90,8 @@
   .btn:hover{filter:brightness(1.07)} .btn:active{transform:translateY(1px)}
   .btn.secondary{background:linear-gradient(180deg,#6b7280,#4b5563); box-shadow:0 10px 20px rgba(55,65,81,.35), inset 0 1px 0 rgba(255,255,255,.25);}
 
-  /* MODE segmented control – high contrast */
-  .mode{
-    display:flex;gap:8px;padding:6px;border-radius:999px;background:#0f172a;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)
-  }
+  /* MODE segmented control */
+  .mode{display:flex;gap:8px;padding:6px;border-radius:999px;background:#0f172a;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
   .mode input{display:none}
   .mode label{
     user-select:none; cursor:pointer; padding:10px 14px; border-radius:999px; font-weight:900; color:#cbd5e1;
@@ -113,17 +102,25 @@
     box-shadow:0 10px 20px rgba(29,78,216,.35), inset 0 1px 0 rgba(255,255,255,.4);
   }
 
-  .result{margin-top:8px;font-size:clamp(18px,2.2vw,24px);font-weight:1000;color:var(--accent);letter-spacing:.3px;min-height:1.5em}
+  .result{margin-top:8px;font-size:clamp(18px,2.2vw,24px);font-weight:1000;color:var(--accent);min-height:1.5em}
 
-  /* suggestion card – colorful and obvious */
-  .suggest{
-    margin-top:12px;padding:12px;border-radius:14px;font-weight:800;
-    background:linear-gradient(180deg,#fff7ed,#ffedd5);
-    color:#7c2d12; border:1px solid #fdba74; box-shadow:0 8px 18px rgba(251,146,60,.25);
+  /* suggestion – hidden until after roll */
+  .suggest-wrap{display:none; margin-top:12px;}
+  .bubble{
+    display:inline-block; padding:6px 10px; border-radius:999px; font-weight:1000; color:#111;
+    background:linear-gradient(180deg,#fef3c7,#fde68a); border:1px solid #f59e0b;
+    box-shadow:0 8px 18px rgba(245,158,11,.25); animation:bubblePop .5s ease-out;
   }
+  @keyframes bubblePop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+  .suggest{
+    margin-top:8px;padding:12px;border-radius:14px;font-weight:800;
+    background:linear-gradient(180deg,#fff7ed,#ffedd5);
+    color:#7c2d12; border:1px solid #fdba74; box-shadow:0 8px 18px rgba(251,146,60,.25); animation:cardIn .4s ease-out;
+  }
+  @keyframes cardIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 
   /* history */
-  .history{margin-top:12px;background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px}
+  .history{margin-top:12px;background:rgba(255,255,255,.9);border:1px solid rgba(0,0,0,.06);border-radius:14px;padding:12px}
   .history h3{margin:0 0 8px 0;font-size:14px;color:#0b1220;text-transform:uppercase;letter-spacing:.6px}
   .history ul{list-style:none;margin:0;padding:0;max-height:160px;overflow:auto}
   .history li{font-size:14px;padding:6px 4px;border-bottom:1px dashed rgba(0,0,0,.08)}
@@ -133,7 +130,7 @@
   .footer{margin-top:16px;text-align:center;color:#0b1220;font-weight:900}
   .legal{margin-top:6px;font-size:12px;color:#334155}
 
-  /* PARENT’S CHOICE banner – brighter + longer */
+  /* PARENT’S CHOICE banner */
   .pc-banner{
     position:absolute; inset:0; display:none; align-items:center; justify-content:center;
     font-weight:1000; font-size:clamp(44px, 12vw, 140px);
@@ -143,9 +140,9 @@
   .pc-banner.show{ display:flex; animation: pcflash 2.2s ease-in-out 1; }
   @keyframes pcflash{
     0%{ opacity:0; transform: scale(.96) rotate(-2deg)}
-    20%{ opacity:.85 }
-    50%{ opacity:.65; transform: scale(1.02) rotate(2deg)}
-    80%{ opacity:.85 }
+    20%{ opacity:.92 }
+    50%{ opacity:.72; transform: scale(1.02) rotate(2deg)}
+    80%{ opacity:.92 }
     100%{ opacity:0; transform: scale(1) }
   }
 
@@ -153,7 +150,8 @@
   dialog{border:none;border-radius:16px;padding:0;max-width:480px;width:92%;background:#ffffff;color:#0b1220; box-shadow:var(--shadow-lg);}
   dialog .modal-inner{padding:18px}
   dialog .close-x{position:absolute;right:10px;top:8px;cursor:pointer;font-weight:900}
-  dialog textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #d1d5db;background:#f8fafc;color:#0b1220;font-weight:700;min-height:96px}
+  dialog textarea, dialog input{width:100%;padding:12px;border-radius:10px;border:1px solid #d1d5db;background:#f8fafc;color:#0b1220;font-weight:700}
+  dialog textarea{min-height:96px}
   dialog .row{display:flex;gap:10px;margin-top:12px}
   canvas#confetti{position:fixed;inset:0;pointer-events:none}
 </style>
@@ -161,7 +159,9 @@
 <body>
 <!-- handwriting background -->
 <div class="write-layer" aria-hidden="true">
-  <svg class="write-svg" viewBox="0 0 1400 120"><text x="0" y="72">I WILL NEVER DO IT AGAIN</text></svg>
+  <svg class="write-svg line1" viewBox="0 0 1400 120"><text x="0" y="72">I WILL NEVER DO IT AGAIN</text></svg>
+  <svg class="write-svg line2" viewBox="0 0 1400 120"><text x="0" y="72">I WILL NEVER DO IT AGAIN</text></svg>
+  <svg class="write-svg line3" viewBox="0 0 1400 120"><text x="0" y="72">I WILL NEVER DO IT AGAIN</text></svg>
   <div class="pen">🖊️</div>
 </div>
 
@@ -188,7 +188,6 @@
     </div>
 
     <div class="controls" style="justify-content:space-between">
-      <!-- HIGH-CONTRAST mode selector -->
       <div class="mode" role="group" aria-label="Roll mode">
         <input type="radio" id="m1" name="mode" value="single" checked><label for="m1">Single Roll</label>
         <input type="radio" id="m2" name="mode" value="best3"><label for="m2">Best of 3</label>
@@ -205,7 +204,11 @@
 
     <div class="result" id="result" aria-live="assertive"></div>
 
-    <div class="suggest" id="suggestion">💡 Parents aren’t dictators… ya know, maybe you can offer to wash their car?</div>
+    <!-- Suggestion appears only after a roll -->
+    <div class="suggest-wrap" id="suggestWrap">
+      <div class="bubble">DID YOU KNOW?</div>
+      <div class="suggest" id="suggestion"></div>
+    </div>
 
     <div class="history">
       <h3>Last 10 Rolls</h3>
@@ -220,16 +223,26 @@
   </section>
 </div>
 
-<!-- One-time Parent’s choice modal -->
+<!-- Parent’s choice modal (forced) -->
 <dialog id="pcModal">
   <div class="modal-inner">
     <div class="close-x" id="pcClose">×</div>
-    <h3 style="margin:0 0 8px 0">Parent’s choice (optional)</h3>
-    <p style="margin:0 0 10px 0;color:#475569">Set it once now. It stays hidden unless landed on.</p>
+    <h3 style="margin:0 0 8px 0">Parent’s choice</h3>
+    <p style="margin:0 0 10px 0;color:#475569">Set it once now. You can’t roll until this is filled.</p>
     <textarea id="pcInput" placeholder="Type your custom punishment"></textarea>
     <div class="row" style="justify-content:flex-end">
-      <button class="btn secondary" id="pcSkip" type="button">Skip</button>
       <button class="btn" id="pcSave" type="button">Save</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Warning modal if they try to bail -->
+<dialog id="warnModal">
+  <div class="modal-inner">
+    <h3 style="margin:0 0 8px 0">Heads up</h3>
+    <p id="warnMsg" style="margin:0 0 10px 0;color:#475569">Don’t leave your kids in suspense—choose your Parent’s Choice option to start rollin’ the dice!</p>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn" id="warnOk" type="button">OK</button>
     </div>
   </div>
 </dialog>
@@ -240,9 +253,9 @@
     <div class="close-x" id="rulesClose">×</div>
     <h3 style="margin:0 0 8px 0">Rules</h3>
     <ul style="line-height:1.5;margin:0 0 8px 16px;padding:0;color:#0b1220">
-      <li>Choose Single Roll or Best of 3 (you’ll set Parent’s choice once).</li>
+      <li>Choose Single Roll or Best of 3.</li>
       <li>Best of 3 picks the majority; if all different, higher time severity wins.</li>
-      <li>Parent’s choice stays hidden unless landed on.</li>
+      <li>Parent’s choice must be set before rolling and is revealed only if landed on.</li>
       <li>History resets on load.</li>
     </ul>
     <div class="row" style="justify-content:flex-end">
@@ -257,12 +270,12 @@
   const TIMES=["1 day","2 days","1 week","1x","2x","45 min"];
   const TIME_RANK={"45 min":1,"1x":2,"1 day":3,"2x":4,"2 days":5,"1 week":6};
   const TIPS=[
-    "💡 Parents aren’t dictators… ya know, maybe you can offer to wash their car?",
-    "📚 Wanna know a secret? Parents secretly like essays too. #justsayin",
-    "🍀 Consider yourself lucky — your parents used to get beat with rulers & belts.",
-    "🤕 Grandma once said she had to choose the stick… the thin ones hurt the most.",
-    "🫨 1.5M kids get proved wrong by their parents every 15 seconds. Let that sink in.",
-    "🔥 There’s an ice pack in the freezer to help with this burn!"
+    "Parents aren’t dictators… ya know, maybe you can offer to wash their car? 🚗",
+    "Wanna know a secret? Parents secretly like essays too. #justsayin ✍️",
+    "Consider yourself lucky — rulers & belts were a thing. 🍀",
+    "Grandma had to choose the stick… the thin ones hurt the most. 🤕",
+    "1.5M kids get proved wrong by their parents every 15 seconds. 🫨",
+    "There’s an ice pack in the freezer to help with this burn! 🔥"
   ];
 
   /* ===== Elements ===== */
@@ -271,40 +284,58 @@
   const resultEl=document.getElementById("result"), historyEl=document.getElementById("history");
   const btnRoll=document.getElementById("roll"), btnRerollOne=document.getElementById("reroll-one");
   const btnClear=document.getElementById("clear-history"), btnShare=document.getElementById("share");
-  const rulesBtn=document.getElementById("rulesBtn"), suggestionEl=document.getElementById("suggestion");
+  const rulesBtn=document.getElementById("rulesBtn");
   const pcBanner=document.getElementById("pcBanner");
-  const pcModal=document.getElementById("pcModal"), pcInput=document.getElementById("pcInput");
-  const pcSave=document.getElementById("pcSave"), pcSkip=document.getElementById("pcSkip"), pcClose=document.getElementById("pcClose");
+
+  const pcModal=document.getElementById("pcModal"), pcInput=document.getElementById("pcInput"), pcSave=document.getElementById("pcSave"), pcClose=document.getElementById("pcClose");
+  const warnModal=document.getElementById("warnModal"), warnOk=document.getElementById("warnOk");
   const rulesModal=document.getElementById("rulesModal"), rulesOk=document.getElementById("rulesOk"), rulesClose=document.getElementById("rulesClose");
+
+  const suggestWrap=document.getElementById("suggestWrap"), suggestionEl=document.getElementById("suggestion");
 
   /* ===== State ===== */
   let mode="single", askedForPCOnce=false, parentsChoice="", isRolling=false, lastShareText="";
   const history=[];
 
-  // mode selector
+  // force PC entry on first load (default Single Roll)
+  function requirePC(){
+    if(!parentsChoice){
+      pcInput.value="";
+      pcModal.showModal();
+      pcInput.focus();
+    }
+  }
+
+  // close X acts like “cannot dismiss”
+  pcClose?.addEventListener("click", ()=>{
+    warnModal.showModal();
+  });
+  warnOk.addEventListener("click", ()=>{
+    warnModal.close();
+    pcModal.showModal();
+    pcInput.focus();
+  });
+  pcSave.addEventListener("click", ()=>{
+    const v=(pcInput.value||"").trim();
+    if(!v){ warnModal.showModal(); return; }
+    parentsChoice=v;
+    pcModal.close();
+  });
+
+  // mode selector (also triggers PC once if not set)
   document.querySelectorAll('input[name="mode"]').forEach(r=>{
     r.addEventListener('change',e=>{
       mode=e.target.value;
-      if(!askedForPCOnce){ askedForPCOnce=true; pcInput.value=parentsChoice; pcModal.showModal(); }
+      if(!parentsChoice) requirePC();
     });
   });
-
-  // PC modal
-  pcSave.addEventListener("click",()=>{ parentsChoice=(pcInput.value||"").trim(); pcModal.close(); });
-  pcSkip.addEventListener("click",()=>{ parentsChoice=""; pcModal.close(); });
-  pcClose.addEventListener("click",()=> pcModal.close());
-
-  // Rules
-  rulesBtn.addEventListener("click",()=>{ if(isRolling) return; rulesModal.showModal(); });
-  rulesOk.addEventListener("click",()=> rulesModal.close());
-  rulesClose.addEventListener("click",()=> rulesModal.close());
 
   /* ===== Confetti ===== */
   const confettiCanvas=document.getElementById("confetti"), ctx=confettiCanvas.getContext("2d");
   function resizeCanvas(){ confettiCanvas.width=innerWidth; confettiCanvas.height=innerHeight; }
   addEventListener("resize",resizeCanvas,{passive:true}); resizeCanvas();
   let confetti=[];
-  function burstConfetti(){ confetti=[]; for(let i=0;i<200;i++){ confetti.push({x:confettiCanvas.width/2,y:confettiCanvas.height/3,r:Math.random()*4+2,vx:(Math.random()-0.5)*8,vy:Math.random()*-6-2,g:0.15+Math.random()*0.15,a:1}); } animateConfetti(); }
+  function burstConfetti(){ confetti=[]; for(let i=0;i<220;i++){ confetti.push({x:confettiCanvas.width/2,y:confettiCanvas.height/3,r:Math.random()*4+2,vx:(Math.random()-0.5)*8,vy:Math.random()*-6-2,g:0.15+Math.random()*0.15,a:1}); } animateConfetti(); }
   function animateConfetti(){
     ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
     confetti.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.a-=0.007; ctx.globalAlpha=Math.max(p.a,0);
@@ -341,8 +372,11 @@
   function animateDice(){ isRolling=true; dieC.classList.remove("rolling"); dieT.classList.remove("rolling"); void dieC.offsetWidth; void dieT.offsetWidth; dieC.classList.add("rolling"); dieT.classList.add("rolling"); }
   function showPCBanner(){ pcBanner.classList.remove("show"); void pcBanner.offsetWidth; pcBanner.classList.add("show"); burstConfetti(); }
 
-  /* ===== Roll flows ===== */
+  /* ===== Roll flows (blocked until PC set) ===== */
+  function guardPC(){ if(!parentsChoice){ warnModal.showModal(); return false; } return true; }
+
   function performRoll(){
+    if(!guardPC() || isRolling) return;
     playRumble(); haptic([20,30,20]); animateDice();
     const spinC=[...CONSEQUENCES].sort(()=>Math.random()-.5), spinT=[...TIMES].sort(()=>Math.random()-.5);
     let k=0, ticks=14, interval=Math.floor(900/ticks);
@@ -354,20 +388,22 @@
         const r1=baseRoll(); const picked=(mode==="single")?r1:chooseBestOf3(r1,baseRoll(),baseRoll());
         dieCText.textContent=picked.consequence; dieTText.textContent=picked.time;
 
-        // finalize
         let c=picked.consequence, t=picked.time;
         if(c==="Parent’s choice"){ showPCBanner(); if(parentsChoice) c=`Parent’s choice: ${parentsChoice}`; }
         isRolling=false; playChime(); haptic([25,30]);
 
         const line=`${c} … ${t}`;
-        resultEl.textContent=line; suggestionEl.textContent=randTip(); pushHistory(line);
+        resultEl.textContent=line; pushHistory(line);
+        // reveal suggestion AFTER roll with bubble
+        suggestionEl.textContent=randTip(); suggestWrap.style.display="block"; // triggers CSS animations
         lastShareText=`Teen Timeout\n${line}\nLET THIS BE A LESSON. PARENTS ALWAYS WIN.🏆 #loveyou`;
       }
     }, interval);
   }
 
   function rerollOne(){
-    if(isRolling) return; playRumble(); haptic([20,30,20]); animateDice();
+    if(!guardPC() || isRolling) return;
+    playRumble(); haptic([20,30,20]); animateDice();
     const target=Math.random()<0.5?"C":"T"; let k=0,ticks=10,interval=Math.floor(900/ticks);
     const tmr=setInterval(()=>{
       if(target==="C") dieCText.textContent=CONSEQUENCES[secureIndex(CONSEQUENCES.length)];
@@ -380,7 +416,8 @@
         if(c==="Parent’s choice"){ showPCBanner(); if(parentsChoice) c=`Parent’s choice: ${parentsChoice}`; }
         isRolling=false; playChime(); haptic([25,30]);
         const line=`${c} … ${t}`;
-        resultEl.textContent=line; suggestionEl.textContent=randTip(); pushHistory(line);
+        resultEl.textContent=line; pushHistory(line);
+        suggestionEl.textContent=randTip(); suggestWrap.style.display="block";
         lastShareText=`Teen Timeout\n${line}\nLET THIS BE A LESSON. PARENTS ALWAYS WIN.🏆 #loveyou`;
       }
     }, interval);
@@ -388,16 +425,23 @@
 
   /* ===== Share & Clear ===== */
   async function share(){ const text=lastShareText||"Teen Timeout"; if(navigator.share){ try{ await navigator.share({text}); }catch{} } else { try{ await navigator.clipboard.writeText(text); alert("Copied to clipboard."); }catch{ prompt("Copy this", text); } } }
-
-  btnRoll.addEventListener("click", ()=>{ if(isRolling) return; performRoll(); });
+  btnRoll.addEventListener("click", performRoll);
   btnRerollOne.addEventListener("click", rerollOne);
   btnShare.addEventListener("click", share);
-  btnClear.addEventListener("click", ()=>{ history.length=0; historyEl.innerHTML=""; resultEl.textContent=""; suggestionEl.textContent=randTip(); });
+  btnClear.addEventListener("click", ()=>{ history.length=0; historyEl.innerHTML=""; resultEl.textContent=""; suggestWrap.style.display="none"; });
 
-  [dieC,dieT].forEach(el=>el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); if(!isRolling) performRoll(); }}));
+  [dieC,dieT].forEach(el=>el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); performRoll(); }}));
 
   /* ===== Init ===== */
-  window.addEventListener("load", ()=>{ history.length=0; historyEl.innerHTML=""; suggestionEl.textContent=randTip(); });
+  window.addEventListener("load", ()=>{
+    history.length=0; historyEl.innerHTML="";
+    requirePC(); // force the prompt even for default Single Roll
+  });
+
+  // Rules modal
+  rulesBtn.addEventListener("click", ()=>{ if(isRolling) return; rulesModal.showModal(); });
+  rulesOk.addEventListener("click", ()=> rulesModal.close());
+  rulesClose.addEventListener("click", ()=> rulesModal.close());
 </script>
 </body>
 </html>
